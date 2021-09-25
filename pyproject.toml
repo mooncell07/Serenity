@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "future gospel"
+version = "0.1.0"
+description = "A bad discord bot."
+authors = ["NovaEmiya <importz750@gmail.com>"]
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+aiohttp = "^3.7.4"
+hata = "^1.1.106"
+rfc3986 = "^1.5.0"
+python-dotenv = "^0.19.0"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
