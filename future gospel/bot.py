@@ -20,7 +20,7 @@ async def ready(client):
 
 
 @rinie.commands
-async def ping(client, message, url) -> Any:
+async def trace(client, message, url) -> Any:
     """
     This command looks up the anime frame and returns info around it.
     """
