@@ -13,18 +13,18 @@ class SetTraceMoe:
     Wtf is this
     """
 
-    def __init__(self, content) -> None:
-        cntnt = {}
-        for i in content:
-            cntnt[i] = (
-                str(content[i]) if not isinstance(content[i], dict) else content[i]
-            )
-        self.__dict__.update(cntnt)
+    def __init__(self, content: dict) -> None:
+        self.__dict__.update(
+            {
+                k: (str(v) if not isinstance(v, dict) else v)
+                for (k, v) in content.items()
+            }
+        )
 
 
 def convert(time: Union[float, int]) -> str:
     """
-    converts time in seconds to human friendly format.
+    Converts time in seconds to human friendly format.
     """
     h = (time // 3600) % 24
     m = (time // 60) % 60
@@ -37,12 +37,13 @@ class TraceMoe:
     A class representing a TraceMoe. A minimal unfinished wrapper around trace.moe
     """
 
-    __slots__ = ("BASE", "img", "color")
+    __slots__ = ("BASE", "img", "COLOR", "nsfw")
 
-    def __init__(self, img) -> None:
+    def __init__(self, img, *, nsfw=False) -> None:
         self.BASE: str = "api.trace.moe"
+        self.COLOR: hex = 0x0000FF
         self.img: str = img
-        self.color: hex = 0x0000FF
+        self.nsfw: bool = nsfw
 
     async def search(self, *, embedify=True) -> Union[Embed, dict]:
         """
@@ -53,8 +54,15 @@ class TraceMoe:
         )
         async with ClientSession() as session:
             async with session.get(uri.geturl()) as ret:
-                con = await ret.json()
-                return self._embedify(con) if embedify else con
+                if 300 > ret.status >= 200:
+                    con = await ret.json()
+                    return self._embedify(con) if embedify else con
+                else:
+                    return Embed(
+                        title="Error",
+                        description=f"Encountered Bad Status code of {ret.status}.",
+                        color=self.COLOR,
+                    )
 
     def _embedify(self, content: dict) -> Embed:  # Will paginate later...
         """
@@ -64,30 +72,43 @@ class TraceMoe:
             res = content["result"]
         except KeyError:
             return Embed(
-                title="Error", description=content.get("error"), color=self.color
+                title="Error", description=content.get("error"), color=self.COLOR
             )
 
-        res = SetTraceMoe(res[0])
-        anilist = res.anilist
+        if res[0]["anilist"]["isAdult"] and self.nsfw is False:
+            return Embed(
+                title="[Blocked]",
+                description="The response had NSFW content"
+                " & this channel is not marked as NSFW.",
+                color=self.COLOR,
+            )
 
-        emb = Embed(
-            title=str(anilist["title"].get("english")), color=self.color, url=res.video
-        )
+        else:
+            res = SetTraceMoe(res[0])
+            anilist = res.anilist
 
-        emb.add_image(res.image)
+            emb = Embed(
+                title=str(anilist["title"].get("english")),
+                color=self.COLOR,
+                url=res.video,
+            )
 
-        tm = list(map(lambda x: convert(float(x)), [res.__dict__["from"], res.to]))
+            emb.add_image(res.image)
 
-        emb.add_field(
-            name="Duration - ", value=f"from {tm[0]} to {tm[1]}.", inline=True
-        )
-        emb.add_field(
-            name="Similarity - ", value=int(float(res.similarity) * 100), inline=True
-        )
-        emb.add_field(name="Episode - ", value=res.episode, inline=True)
+            tm = list(map(lambda x: convert(float(x)), [res.__dict__["from"], res.to]))
 
-        emb.add_field(name="NSFW? - ", value=anilist.get("isAdult"), inline=True)
-        emb.add_field(name="ID - ", value=anilist.get("id"), inline=True)
-        emb.add_field(name="MAL ID - ", value=anilist.get("idMal"), inline=True)
+            emb.add_field(
+                name="Duration - ", value=f"from {tm[0]} to {tm[1]}.", inline=True
+            )
+            emb.add_field(
+                name="Similarity - ",
+                value=f"{int(float(res.similarity) * 100)}%",
+                inline=True,
+            )
+            emb.add_field(name="Episode - ", value=res.episode, inline=True)
 
-        return emb
+            emb.add_field(name="NSFW? - ", value=anilist.get("isAdult"), inline=True)
+            emb.add_field(name="ID - ", value=anilist.get("id"), inline=True)
+            emb.add_field(name="MAL ID - ", value=anilist.get("idMal"), inline=True)
+
+            return emb
