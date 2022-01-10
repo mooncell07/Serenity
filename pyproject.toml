@@ -1,18 +1,19 @@
 [tool.poetry]
-name = "future gospel"
-version = "0.2.0"
+name = "Serenity"
+version = "0.3.0"
 description = "A bad discord bot."
 authors = ["NovaEmiya <importz750@gmail.com>"]
 license = "MIT"
 
 [tool.poetry.dependencies]
 python = "^3.9"
-aiohttp = "^3.7.4"
 hata = "^1.1.106"
-rfc3986 = "^1.5.0"
 python-dotenv = "^0.19.0"
+"azaka" = {git = "https://github.com/mooncell07/Azaka.git"}
 
 [tool.poetry.dev-dependencies]
+black = "^21.12b0"
+flake8 = "^4.0.1"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
