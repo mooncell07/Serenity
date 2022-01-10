@@ -1,1 +1,1 @@
-A smoll and badly made discord bot.
+An example and documentation bot for Azaka on discord made with hata discord API Wrapper.

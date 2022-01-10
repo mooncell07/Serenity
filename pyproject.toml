@@ -1,8 +1,8 @@
 [tool.poetry]
 name = "Serenity"
 version = "0.3.0"
-description = "A bad discord bot."
-authors = ["NovaEmiya <importz750@gmail.com>"]
+description = "An example and documentation bot for Azaka on discord made with hata discord API Wrapper."
+authors = ["mooncell07 <mooncell07@users.noreply.github.com>"]
 license = "MIT"
 
 [tool.poetry.dependencies]
