@@ -11,7 +11,7 @@ develop = false
 type = "git"
 url = "https://github.com/mooncell07/Azaka.git"
 reference = "master"
-resolved_reference = "b6609996153c9403da30e090db42b4987295815f"
+resolved_reference = "d6b8368c32369bcb270e4d92861ead687a43ce8c"
 
 [[package]]
 name = "black"
