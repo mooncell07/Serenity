@@ -38,10 +38,9 @@ class Serenity(commands.Bot):
         """Internal method which makes call to the API and puts the
         result into a queue."""
         try:
-            res = (await ctx.get_vn(lambda VN: VN.TITLE % title, details=True))[0]
-        except azaka.ThrottledError:
-            res = "Azaka got ratelimited."
-
+            res = await ctx.get_vn(lambda VN: VN.TITLE % title, details=True)
+        except azaka.AzakaException as exc:
+            res = exc.message
         finally:
             await self.results.put(res)
 
@@ -50,9 +49,9 @@ class Serenity(commands.Bot):
         """A command to fetch VNs from VNDB."""
         self.azaka_client.register(self.get_vn, title=title)
         result = await self.results.get()
-        if not isinstance(result, str):
-            return await ctx.send(embed=vn_to_embed(result))
-        await ctx.send(result)
+        if isinstance(result, list) and len(result) > 0:
+            return await ctx.send(embed=vn_to_embed(result[0]))
+        await ctx.send(result or "No results.")
 
     async def on_command_error(
         self, ctx: commands.Context, exc: DiscordException

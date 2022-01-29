@@ -1,6 +1,7 @@
 import textwrap
-from discord import Embed
+
 from azaka.objects import VN
+from discord import Embed
 
 __all__ = ("vn_to_embed",)
 
