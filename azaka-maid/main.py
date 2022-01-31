@@ -10,7 +10,7 @@ from dotenv import load_dotenv
 
 from embedder import vn_to_embed
 
-logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(level=logging.INFO)
 load_dotenv()
 
 
@@ -30,8 +30,7 @@ class Serenity(commands.Bot):
         print("CONNECTED TO DISCORD.")
 
     async def azaka_ready(self) -> None:
-        # Newer version has `wait_until_connect`.
-        await self.azaka_client._connector.on_connect.wait()
+        await self.azaka_client.wait_until_connect()
         print("CONNECTED TO VNDB.")
 
     async def get_vn(self, ctx: azaka.Context, title: str) -> None:
@@ -68,6 +67,6 @@ serenity = Serenity()
 # Not mandatory to install jishaku, just using it for personal use.
 serenity.load_extension("jishaku")
 
-serenity.loop.create_task(serenity.start(os.getenv("TOKEN")))
+serenity.loop.create_task(serenity.azaka_client.connect())
 serenity.loop.create_task(serenity.azaka_ready())
-serenity.azaka_client.start()
+serenity.run(os.getenv("TOKEN"))

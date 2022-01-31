@@ -1,5 +1,6 @@
 import textwrap
 
+import azaka
 from azaka.objects import VN
 from discord import Embed
 
@@ -16,7 +17,7 @@ def vn_to_embed(vn: VN) -> Embed:
         title=vn.title,
         description=desc,
         color=0xFF0000,
-        url=f"https://www.wikidata.org/wiki/{vn.links.wikidata}"
+        url=azaka.utils.construct_wikidata_link(vn.links.wikidata)
         if vn.links.wikidata
         else None,
     )

@@ -52,18 +52,11 @@ tests_no_zope = ["coverage[toml] (>=5.0.2)", "hypothesis", "pympler", "pytest (>
 
 [[package]]
 name = "azaka"
-version = "0.1.0"
+version = "0.2.0"
 description = "A work in progress API Wrapper around The Visual Novel Database (VNDB) written in Python."
 category = "main"
 optional = false
-python-versions = "^3.7"
-develop = false
-
-[package.source]
-type = "git"
-url = "https://github.com/mooncell07/Azaka.git"
-reference = "master"
-resolved_reference = "3e15e5cd0c0d01b4910c80f8400c7c4e612d9252"
+python-versions = ">=3.7,<4.0"
 
 [[package]]
 name = "black"
@@ -317,7 +310,7 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "92e5c7fa53cdceff5f33bbfce3140fcfcb58065f39be77304dc780cbe1be154d"
+content-hash = "0b34ddbc900af8bbefed5d1aeba2b38f8bb6caba846ca78f35a33c6dd0137200"
 
 [metadata.files]
 aiohttp = [
@@ -371,7 +364,10 @@ attrs = [
     {file = "attrs-21.4.0-py2.py3-none-any.whl", hash = "sha256:2d27e3784d7a565d36ab851fe94887c5eccd6a463168875832a1be79c82828b4"},
     {file = "attrs-21.4.0.tar.gz", hash = "sha256:626ba8234211db98e869df76230a137c4c40a12d72445c45d5f5b716f076e2fd"},
 ]
-azaka = []
+azaka = [
+    {file = "Azaka-0.2.0-py3-none-any.whl", hash = "sha256:01c48414b2a88e8f81a821cb0dccccedba8895c58a58a44ffd950cf85e3fb3d5"},
+    {file = "Azaka-0.2.0.tar.gz", hash = "sha256:38a4680c4edc754651ae12bdac1c6ac2ff789b721948a4f4565e2198f20585fb"},
+]
 black = [
     {file = "black-21.12b0-py3-none-any.whl", hash = "sha256:a615e69ae185e08fdd73e4715e260e2479c861b5740057fde6e8b4e3b7dd589f"},
     {file = "black-21.12b0.tar.gz", hash = "sha256:77b80f693a569e2e527958459634f18df9b0ba2625ba4e0c2d5da5be42e6f2b3"},
